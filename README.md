@@ -1,1 +1,2 @@
-# Learning_Cpp
+# Description
+Simple repository used for learning C++.
