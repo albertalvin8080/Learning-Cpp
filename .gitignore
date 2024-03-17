@@ -74,6 +74,7 @@ JPA_Hibernate/first-test/mysql-data/
 **/*.vcxproj
 **/*.vcxproj.filters
 **/*.vcxproj.user
+**/*.h.gch # compiled header files
 
 -- TESTING --
 **/*.madmoiselle

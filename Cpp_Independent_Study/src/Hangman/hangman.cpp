@@ -6,10 +6,10 @@
  */
 
 #include <iostream>
-#include "forca.h"
+#include "hangman.h"
 using namespace std;
 
-bool Forca::try_guessing(const char guess) {
+bool Hangman::try_guessing(const char guess) {
 	size_t t = word.find(guess, 0);
 	if(t == string::npos) {
 		this->lives--;
@@ -28,7 +28,7 @@ bool Forca::try_guessing(const char guess) {
 	return true;
 }
 
-void Forca::show_word() {
+void Hangman::show_word() {
 
 	if(lives < 6) cout << "     " << "O" << "   " << endl;
 	if(lives < 5) cout << "    /";
@@ -43,15 +43,15 @@ void Forca::show_word() {
 	cout << endl;
 }
 
-int Forca::get_lives() {
+int Hangman::get_lives() {
 	return lives;
 }
 
-bool Forca::is_finished() {
+bool Hangman::is_finished() {
 	return finished;
 }
 
-Forca::Forca(const string &word) {
+Hangman::Hangman(const string &word) {
 	this->lives = 0;
 	this->word = word;
 	for(size_t i = 0; i < word.length(); ++i) {

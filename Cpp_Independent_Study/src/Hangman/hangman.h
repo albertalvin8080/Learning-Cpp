@@ -10,7 +10,7 @@
 #include <iostream>
 using namespace std;
 
-class Forca {
+class Hangman {
 private:
 	int lives;
 	string word;
@@ -18,8 +18,8 @@ private:
 	string placeholders;
 
 public:
-	Forca(const string &word);
-//	~Forca();
+	Hangman(const string &word);
+//	~Hangman();
 	void show_word();
 	bool try_guessing(const char guess);
 	int get_lives();
