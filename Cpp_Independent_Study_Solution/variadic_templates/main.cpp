@@ -10,7 +10,7 @@ T sum(const T& t, const Args&... args) {
 	return t + sum(args...);
 }
 
-int main1() {
+int main() {
 	std::cout << sum<double, double>(3, 5, 6.3, 10, 12) << "\n";
 	return 0;
 }

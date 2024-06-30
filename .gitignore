@@ -13,11 +13,11 @@ target/
 *.ipr
 
 ### Eclipse ###
-.apt_generated
-.classpath
+**/.apt_generated/
+**/.classpath
 .factorypath
-.project
-.settings
+**/.project
+**/.settings/
 .springBeans
 .sts4-cache
 
@@ -45,6 +45,7 @@ JPA_Hibernate/first-test/mysql-data/
 
 **/.idea/
 **/.vscode/
+**/.vs
 
 **/grafana-storage/
 
@@ -53,6 +54,8 @@ JPA_Hibernate/first-test/mysql-data/
 
 **/target/
 **/out/
+
+**/*.out
 
 **/mongodb_data/
 
@@ -76,5 +79,13 @@ JPA_Hibernate/first-test/mysql-data/
 **/*.vcxproj.user
 **/*.h.gch # compiled header files
 
+**/*.class
+
+**/.metadata
+
+**/.venv
+**/__pycache__
+
 -- TESTING --
 **/*.madmoiselle
+# TESTING COPY SH

@@ -2,6 +2,7 @@
 #include <mutex>
 #include <future>
 #include <vector>
+#include <algorithm>
 #include "timer.h"
 
 int main() {
