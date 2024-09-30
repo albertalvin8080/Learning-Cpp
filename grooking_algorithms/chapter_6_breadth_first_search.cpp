@@ -11,7 +11,7 @@ public:
     const string identifier;
     std::list<string> neighboors;
     Node(const string &identifier, const std::list<string> &neighboors) : identifier(identifier), neighboors(neighboors) {}
-    Node() {} // needed because unordered_map uses it for the operator[]
+    Node() {} // needed because unordered_map<> uses it for the operator[]
 };
 
 class Graph
@@ -53,6 +53,8 @@ public:
                     // this line basically says: we reach `node` from `front`.
                     visited.emplace(node.identifier, front.identifier);
                 }
+                else
+                    continue; // if the program reaches this `else`, it means that `node.identifier != target_identifier`
 
                 // found the path to the target.
                 // this needs to be placed after inserting into the visited<> map.
@@ -74,7 +76,25 @@ public:
     }
 };
 
-int main()
+void print(std::list<string> to_print)
+{
+    // for (const string &str : to_print)
+    //     std::cout << str << "->";
+    // std::cout << std::endl;
+
+    auto it = to_print.begin();
+    while (true)
+    {
+        std::cout << *it;
+        ++it;
+        if (it == to_print.end())
+            break;
+        std::cout << " -> ";
+    }
+    std::cout << std::endl;
+}
+
+void example()
 {
     Graph graph;
     graph.create_node("YOU", std::list<string>({"BOB", "ALICE", "CLAIRE"}));
@@ -91,8 +111,49 @@ int main()
     // graph.breadth_first_search("YOU", "THOM", result);
     graph.breadth_first_search("YOU", "ANUJ", result);
 
-    for (const string &str : result)
-        std::cout << str << std::endl;
+    std::cout << "example: ";
+    print(result);
+}
+
+void ex_6_1()
+{
+    Graph graph;
+    graph.create_node("S", std::list<string>({"1", "3"}));
+    graph.create_node("1", std::list<string>({"2", "F"}));
+    graph.create_node("3", std::list<string>({"2", "4"}));
+    graph.create_node("2", std::list<string>());
+    graph.create_node("4", std::list<string>());
+    graph.create_node("F", std::list<string>());
+
+    std::list<string> result;
+    graph.breadth_first_search("S", "F", result);
+
+    std::cout << "ex_6_1: ";
+    print(result);
+}
+
+void ex_6_2()
+{
+    Graph graph;
+    graph.create_node("CAB", std::list<string>({"CAR", "CAT"}));
+    graph.create_node("CAR", std::list<string>({"CAT", "BAR"}));
+    graph.create_node("BAR", std::list<string>({"BAT"}));
+    graph.create_node("CAT", std::list<string>({"BAT", "MAT"}));
+    graph.create_node("MAT", std::list<string>({"BAT"}));
+    graph.create_node("BAT", std::list<string>());
+
+    std::list<string> result;
+    graph.breadth_first_search("CAB", "BAT", result);
+
+    std::cout << "ex_6_2: ";
+    print(result);
+}
+
+int main()
+{
+    example();
+    ex_6_1();
+    ex_6_2();
 
     return 0;
 }
