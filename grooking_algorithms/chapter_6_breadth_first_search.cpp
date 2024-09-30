@@ -9,8 +9,8 @@ class Node
 {
 public:
     const string identifier;
-    std::list<string> neighboors;
-    Node(const string &identifier, const std::list<string> &neighboors) : identifier(identifier), neighboors(neighboors) {}
+    std::list<string> neighbors;
+    Node(const string &identifier, const std::list<string> &neighbors) : identifier(identifier), neighbors(neighbors) {}
     Node() {} // needed because unordered_map<> uses it for the operator[]
 };
 
@@ -20,9 +20,9 @@ private:
     std::unordered_map<string, Node> nodes_map;
 
 public:
-    void create_node(const string &identifier, const std::list<string> &neighboors)
+    void create_node(const string &identifier, const std::list<string> &neighbors)
     {
-        Node node(identifier, neighboors);
+        Node node(identifier, neighbors);
         nodes_map.emplace(identifier, node);
     }
 
@@ -36,13 +36,14 @@ public:
         to_visit.push(src_node);
 
         std::unordered_map<string, string> visited;
+        // could also be called `parent`
         visited[src_identifier] = ""; // mark the src node as visited
 
         while (!to_visit.empty())
         {
             Node front = to_visit.front();
             to_visit.pop();
-            for (const string &neighboor_name : front.neighboors)
+            for (const string &neighboor_name : front.neighbors)
             {
                 const Node node = nodes_map[neighboor_name];
                 // checks if the node has already been visited or maked to be visited.
