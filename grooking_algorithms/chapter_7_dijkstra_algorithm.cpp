@@ -1,24 +1,6 @@
 #include <iostream>
 #include <chapter_7_dijkstra.h>
 
-void print(std::list<string> to_print)
-{
-    // for (const string &str : to_print)
-    //     std::cout << str << "->";
-    // std::cout << std::endl;
-
-    auto it = to_print.begin();
-    while (true)
-    {
-        std::cout << *it;
-        ++it;
-        if (it == to_print.end())
-            break;
-        std::cout << " -> ";
-    }
-    std::cout << std::endl;
-}
-
 void example()
 {
     Graph graph;

@@ -9,7 +9,7 @@
 #include <unordered_set>
 
 using string = std::string;
-const int& INFINITY = std::numeric_limits<int>::max();
+const int &INFINITY = std::numeric_limits<int>::max();
 
 void print(std::list<string> to_print)
 {
@@ -87,10 +87,10 @@ public:
 
     std::unordered_map<string, int> generate_costs_table(const string &src)
     {
-        const Node node = nodes_map[src];
         std::unordered_map<string, int> costs;
 
-        // places INFINITY for every node which is not directly reachable from `src`
+        // PREVIOUSLY: places INFINITY for every node which is not directly reachable from `src`.
+        // *NOW*: places INFINITY for every node.
         for (const auto &pair : nodes_map)
         {
             // pair.first = identifier
@@ -98,36 +98,20 @@ public:
             costs.emplace(pair.first, INFINITY);
         }
 
-        for (const Edge &edge : node.neighbors)
-        {
-            costs[edge.dst] = edge.weight;
-        }
+        /*
+        This part becomes unecessary since it will be automatically created in 
+        the first iteration of the while() inside shortest_path().
+        */
+        // const Node& node = nodes_map[src];
+        // for (const Edge &edge : node.neighbors)
+        // {
+        //     costs[edge.dst] = edge.weight;
+        // }
 
         return costs;
     }
 
-    string get_lowest_cost_identifier(
-        const std::unordered_map<string, int> &costs,
-        const std::unordered_set<string> &processed)
-    {
-        string identifier = "";
-        int lowest_cost = INFINITY;
-
-        for(const auto& pair : costs)
-        {
-            // pair.second == `weight`
-            // pair.first == `dst` node
-            if(pair.second < lowest_cost && processed.find(pair.first) == processed.end())
-            {
-                identifier = pair.first;
-                lowest_cost = pair.second;
-            }
-        }
-
-        return identifier;
-    }
-
-    // O(n*n)
+    // O(n logn)
     void shortest_path(const string &src, const string &dst, std::list<string> &result)
     {
         std::unordered_map<string, string> parent;
@@ -136,30 +120,46 @@ public:
 
         print_map(costs);
 
-        string node_identifier = get_lowest_cost_identifier(costs, processed);
-        parent[node_identifier] = src;
-        
-        while (!node_identifier.empty())
+        std::priority_queue<
+            std::pair<int, string>,
+            std::vector<std::pair<int, string>>,
+            std::greater<std::pair<int, string>>>
+            min_heap;
+
+        min_heap.emplace(0, src);
+        costs[src] = 0; // The cost for src needs to be 0 because it will be added to its neighbors in the first iteration of the while().
+
+        while (!min_heap.empty())
         {
-            const int& cost = costs[node_identifier];
-            const Node& node = nodes_map[node_identifier];
-            for(const Edge& edge : node.neighbors)
+            auto [current_cost, node_identifier] = min_heap.top();
+            min_heap.pop();
+
+            // Node already processed
+            if (processed.find(node_identifier) != processed.end())
+                continue;
+            else // Being processed now
+                processed.emplace(node_identifier);
+
+            // Stop early if we reached our destination (not a good idea)
+            // if (node_identifier == dst)
+            //     break;
+
+            const Node &node = nodes_map[node_identifier];
+            for (const Edge &edge : node.neighbors)
             {
-                const string& dst = edge.dst;
-                const int new_cost = cost + edge.weight;
-                // If the cost previously stored for reaching the node `dst` is greater than the new_cost
-                if(costs[dst] > new_cost)
+                const string &dst = edge.dst;
+                const int &new_cost = current_cost + edge.weight;
+                if (new_cost < costs[dst])
                 {
                     costs[dst] = new_cost;
-                    parent[dst] = node.identifier;
+                    parent[dst] = node_identifier;
+                    min_heap.emplace(new_cost, dst);
                 }
             }
-            processed.emplace(node_identifier);
-            node_identifier = get_lowest_cost_identifier(costs, processed);
         }
 
         string current = dst;
-        while(current != src)
+        while (current != src)
         {
             result.push_front(current + "(" + std::to_string(costs[current]) + ")");
             current = parent[current];
