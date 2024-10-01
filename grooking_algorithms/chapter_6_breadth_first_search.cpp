@@ -31,7 +31,7 @@ public:
         const string &target_identifier,
         std::list<string> &result)
     {
-        const Node src_node = nodes_map[src_identifier];
+        const Node& src_node = nodes_map[src_identifier];
         std::queue<Node> to_visit;
         to_visit.push(src_node);
 
@@ -45,7 +45,7 @@ public:
             to_visit.pop();
             for (const string &neighboor_name : front.neighbors)
             {
-                const Node node = nodes_map[neighboor_name];
+                const Node& node = nodes_map[neighboor_name];
                 // checks if the node has already been visited or maked to be visited.
                 auto it = visited.find(node.identifier);
                 if (it == visited.end())
